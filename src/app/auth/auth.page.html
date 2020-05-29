@@ -43,8 +43,7 @@
             </ion-item>
             <ion-item
               *ngIf="!passwordCtrl.valid && passwordCtrl.touched"
-              lines="none"
-            >
+              lines="none">
               <ion-label>
                 Should at least be 6 characters.
               </ion-label>
@@ -63,7 +62,7 @@
             color="primary"
             (click)="onLogin()"
             expand="block"
-            [disabled]="!authForm.valid"
+            
           >
             Login
           </ion-button>

@@ -19,5 +19,6 @@ export class BookingService {
   bookings() {
     return [...this._bookings];
   }
+  
   constructor() { }
 }

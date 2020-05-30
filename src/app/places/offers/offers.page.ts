@@ -14,6 +14,7 @@ import { Place } from '../place.model';
 })
 export class OffersPage implements OnInit {
   offers: Place[];
+  isLoading = false;
   private placesSub: Subscription;
 
   constructor(
@@ -24,6 +25,13 @@ export class OffersPage implements OnInit {
   ngOnInit() {
     this.placesSub = this.placesService.places.subscribe(places => {
       this.offers = places;
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.placesService.fetchPlaces().subscribe(() => {
+      this.isLoading = false;
     });
   }
 

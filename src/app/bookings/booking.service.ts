@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
 export class BookingService {
   private _bookings = new BehaviorSubject<Booking[]>([]);
 
-  bookings() {
+  get bookings() {
     return this._bookings.asObservable();
   }
 
@@ -28,7 +28,7 @@ export class BookingService {
     const newBooking = new Booking(
       Math.random().toString(),
       placeId,
-      this.authService.userId(),
+      this.authService.userId,
       placeTitle,
       placeImage,
       firstName,
@@ -37,7 +37,7 @@ export class BookingService {
       dateFrom,
       dateTo
     );
-    return this.bookings().pipe(
+    return this.bookings.pipe(
       take(1),
       delay(1000),
       tap(bookings => {
@@ -47,7 +47,7 @@ export class BookingService {
   }
 
   cancelBooking(bookingId: string) {
-    return this.bookings().pipe(
+    return this.bookings.pipe(
       take(1),
       delay(1000),
       tap(bookings => {

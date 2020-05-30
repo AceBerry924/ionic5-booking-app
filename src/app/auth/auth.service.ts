@@ -7,11 +7,11 @@ export class AuthService {
   private _userIsAuthenticated = true;
   private _userId = 'abc';
 
-  userIsAuthenticated() {
+  get userIsAuthenticated() {
     return this._userIsAuthenticated;
   }
 
-  userId() {
+  get userId() {
     return this._userId;
   }
 

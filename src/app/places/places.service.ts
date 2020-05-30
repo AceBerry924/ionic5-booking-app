@@ -77,13 +77,21 @@ export class PlacesService {
       dateTo,
       this.authService.userId()
     );
-    return this.places.pipe(
+
+    return this.http
+      .post('https://ionic-booking-app-ec34a.firebaseio.com/offered-places.json', { ...newPlace, id: null })
+      .pipe(
+        tap(resData => {
+          console.log(resData);
+        })
+      );
+    /* return this.places.pipe(
       take(1),
       delay(1000),
       tap(places => {
         this._places.next(places.concat(newPlace));
       })
-    );
+    ); */
   }
 
   updatePlace(placeId: string, title: string, description: string) {

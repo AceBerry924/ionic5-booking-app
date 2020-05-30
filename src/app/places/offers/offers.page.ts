@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { PlacesService } from '../places.service';
 import { Place } from '../place.model';
 
-
 @Component({
   selector: 'app-offers',
   templateUrl: './offers.page.html',

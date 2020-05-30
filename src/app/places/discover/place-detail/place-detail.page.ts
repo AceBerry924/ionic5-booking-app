@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
 
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
+import { AuthService } from '../../../auth/auth.service';
 
 import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
 
@@ -12,24 +14,32 @@ import { CreateBookingComponent } from '../../../bookings/create-booking/create-
   templateUrl: './place-detail.page.html',
   styleUrls: ['./place-detail.page.scss'],
 })
-export class PlaceDetailPage implements OnInit {
+export class PlaceDetailPage implements OnInit, OnDestroy {
   place: Place;
+  isBookable = false;
+  private placeSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private placesService: PlacesService,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(paramMap => {
       if (!paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/offers');
+        this.navCtrl.navigateBack('/places/tabs/discover');
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get('placeId'));
+      this.placeSub = this.placesService
+        .getPlace(paramMap.get('placeId'))
+        .subscribe(place => {
+          this.place = place;
+          this.isBookable = place.userId !== this.authService.userId();
+        });
     });
   }
 
@@ -79,6 +89,12 @@ export class PlaceDetailPage implements OnInit {
           console.log('BOOKED!');
         }
       });
+  }
+
+  ngOnDestroy() {
+    if (this.placeSub) {
+      this.placeSub.unsubscribe();
+    }
   }
 
 }

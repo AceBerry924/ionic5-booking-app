@@ -62,7 +62,7 @@
             color="primary"
             (click)="onLogin()"
             expand="block"
-            
+            [disabled]="!authForm.valid"
           >
             Login
           </ion-button>

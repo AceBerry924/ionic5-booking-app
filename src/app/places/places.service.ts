@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
 import { take, map, tap, delay } from 'rxjs/operators';
 
 import { Place } from './place.model';
-import { AuthService } from '../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,9 @@ export class PlacesService {
     return this._places.asObservable();
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private http: HttpClient) {
+
+  }
 
   getPlace(id: string) {
     return this.places.pipe(
